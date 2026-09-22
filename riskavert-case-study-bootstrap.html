@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Risk management platform - UX Case Study</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bs-primary:#00598E; --bs-primary-rgb:0,89,142;
+    --bs-success:#008642; --bs-success-rgb:0,134,66;
+    --bs-warning:#E4912B; --bs-warning-rgb:228,145,43;
+    --bs-danger:#B13C2E; --bs-danger-rgb:177,60,46;
+    --bs-info:#0074B8; --bs-info-rgb:0,116,184;
+    --bs-body-font-family:'Roboto',Helvetica,Arial,sans-serif;
+    --bs-link-color:#00598E; --bs-link-color-rgb:0,89,142;
+    --bs-link-hover-color:#0069A7;
+    --ink-900:#152530; --ink-700:#374850; --ink-500:#58676D; --ink-300:#9BA4A8;
+    --page:#EEF1F5; --border:#DFE0EB; --sidebar-bg:#F9FAFC; --sidebar-active:#D1DAE0;
+  }
+  body{color:var(--ink-900); scroll-behavior:smooth;}
+  .mono{font-family:'Roboto Mono',monospace;}
+  h1,h2,h3,h4,h5{font-family:'Roboto',sans-serif;}
+  .section-kicker{font-size:.75rem;letter-spacing:.08em;color:var(--bs-primary);font-weight:700;font-family:'Roboto Mono',monospace;text-transform:uppercase;}
+  section{scroll-margin-top:76px;}
+  .navbar-brand{font-weight:700;letter-spacing:.02em;}
+  .nav-pills .nav-link{color:rgba(255,255,255,.75);font-size:.86rem;}
+  .nav-pills .nav-link.active,.nav-pills .nav-link:hover{color:#fff;background:rgba(255,255,255,.15);}
+
+  .hero-preview-strip{background:#0D3653;}
+
+  /* callouts */
+  .story-callout{border-left:4px solid var(--bs-warning);background:#FCF3E9;border-radius:.25rem;padding:1rem 1.25rem;}
+  .story-callout.climax{border-left-color:var(--bs-primary);background:#EBF2F6;}
+  .story-callout .kicker{font-size:.68rem;letter-spacing:.08em;font-weight:700;font-family:'Roboto Mono',monospace;text-transform:uppercase;color:var(--ink-500);display:block;margin-bottom:.35rem;}
+
+  /* tokens */
+  .tier-card .tier-head{font-size:.68rem;letter-spacing:.06em;font-family:'Roboto Mono',monospace;color:#fff;padding:.5rem .9rem;text-transform:uppercase;}
+  .tier-card .tier-body{padding:.8rem .9rem;font-family:'Roboto Mono',monospace;font-size:.8rem;color:var(--ink-700);line-height:2;}
+  .swatch-strip{display:flex;border-radius:.35rem;overflow:hidden;}
+  .swatch-strip div{flex:1;height:52px;}
+
+  /* wireframe */
+  .wire{border:1px dashed var(--ink-300);border-radius:.4rem;padding:1rem;background:#FAFBFC;}
+  .wire-block{background:#E3E8EC;border-radius:.2rem;display:flex;align-items:center;justify-content:center;font-size:.68rem;color:var(--ink-500);font-family:'Roboto Mono',monospace;}
+
+  /* ===================== embedded product prototype ===================== */
+  .proto-frame{border-radius:.5rem;overflow:hidden;box-shadow:0 20px 55px -18px rgba(15,35,55,.4);border:1px solid var(--border);}
+  .proto-browserbar{background:#E7EAEE;padding:.55rem .8rem;display:flex;align-items:center;gap:.35rem;}
+  .proto-browserbar i.dot{width:9px;height:9px;border-radius:50%;background:#C6CCD3;display:inline-block;}
+  .proto-browserbar .url{margin-left:.7rem;background:#fff;border-radius:.25rem;padding:.2rem .7rem;font-size:.68rem;color:var(--ink-500);font-family:'Roboto Mono',monospace;}
+
+  .ptopbar{background:#00598E;color:#fff;display:flex;align-items:center;padding:0 1rem;height:56px;}
+  .ptopbar .plogo{width:28px;height:28px;border-radius:50%;background:#fff;color:#00598E;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;flex-shrink:0;}
+  .ptopbar .pbrand{display:flex;align-items:center;gap:.5rem;width:190px;font-size:.72rem;font-weight:700;letter-spacing:.05em;opacity:.9;}
+  .ptopbar .spacer{flex:1;}
+  .pnavicon{position:relative;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:.8rem;cursor:pointer;}
+  .pnavicon .bdot{position:absolute;top:2px;right:2px;background:#DD4B39;color:#fff;font-size:8px;padding:1px 4px;border-radius:7px;font-weight:700;}
+  .puser{display:flex;align-items:center;gap:.4rem;font-size:.78rem;font-weight:500;}
+  .pvdiv{width:1px;height:18px;background:rgba(255,255,255,.3);margin:0 .6rem;}
+
+  .pbody{display:flex;height:520px;}
+  .pside{width:190px;flex-shrink:0;background:var(--sidebar-bg);overflow:hidden;font-size:.78rem;}
+  .pside .glabel{font-size:.62rem;letter-spacing:.06em;color:var(--ink-300);padding:.8rem 1rem .3rem;font-weight:500;}
+  .pside .pnav{display:flex;align-items:center;gap:.5rem;padding:.55rem 1rem;color:var(--ink-700);border-left:3px solid transparent;cursor:pointer;}
+  .pside .pnav.active{background:var(--sidebar-active);color:var(--ink-900);border-left-color:var(--bs-primary);font-weight:700;}
+  .pside .pnav .pbadge{margin-left:auto;background:#DD4B39;color:#fff;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:8px;}
+
+  .pmain{flex:1;background:var(--page);overflow-y:auto;padding:1rem 1.1rem;}
+  .pscreen{display:none;} .pscreen.active{display:block;}
+  .ph1{font-size:1.05rem;font-weight:400;margin:0 0 .8rem;display:flex;justify-content:space-between;align-items:center;}
+  .pkpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:.9rem;}
+  .pkpi{display:flex;background:#fff;border:1px solid var(--border);border-radius:.3rem;overflow:hidden;height:58px;}
+  .pkpi .icn{width:52px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.05rem;color:rgba(255,255,255,.85);}
+  .pkpi .txt{padding:.4rem .6rem;display:flex;flex-direction:column;justify-content:center;}
+  .pkpi .txt .lbl{font-size:.62rem;font-weight:700;color:var(--ink-900);}
+  .pkpi .txt .val{font-size:1.05rem;font-weight:700;color:var(--ink-900);}
+  .prow2{display:grid;grid-template-columns:2fr 1fr;gap:.6rem;margin-bottom:.6rem;}
+  .ppanel{background:#fff;border:1px solid var(--border);border-radius:.3rem;position:relative;overflow:hidden;padding:.65rem .8rem;}
+  .ppanel::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--bs-primary);}
+  .ppanel h6{font-size:.72rem;font-weight:700;margin:0 0 .4rem;}
+  .pdonut{width:64px;height:64px;border-radius:50%;flex-shrink:0;background:conic-gradient(var(--bs-primary) 0% 38%, var(--bs-success) 38% 63%, var(--bs-warning) 63% 82%, var(--bs-danger) 82% 100%);position:relative;}
+  .pdonut::after{content:'';position:absolute;inset:12px;background:#fff;border-radius:50%;}
+  .plegend{font-size:.62rem;}
+  .plegend .li{display:flex;align-items:center;gap:.35rem;margin-bottom:.35rem;}
+  .plegend i.sw{width:8px;height:8px;border-radius:2px;display:inline-block;}
+  .plegend .val{margin-left:auto;font-weight:700;}
+  .pactrow{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-bottom:1px solid #F1F2F6;font-size:.68rem;}
+  .pactrow:last-child{border-bottom:0;}
+  .picn{width:20px;height:20px;border-radius:.2rem;border:1px solid #C5C7CD;display:inline-flex;align-items:center;justify-content:center;margin-left:.3rem;font-size:.6rem;}
+  .picn.ok{color:var(--bs-success);} .picn.no{color:var(--bs-danger);}
+  .ptable{width:100%;border-collapse:collapse;background:#fff;font-size:.72rem;}
+  .ptable th{text-align:left;padding:.5rem .7rem;font-weight:700;color:var(--ink-700);font-size:.6rem;text-transform:uppercase;border-bottom:1px solid var(--border);}
+  .ptable td{padding:.5rem .7rem;border-bottom:1px solid #F1F2F6;}
+  .pbadgest{display:inline-block;padding:.15rem .5rem;border-radius:.2rem;font-size:.58rem;font-weight:700;color:#fff;text-transform:uppercase;}
+  .pline{width:100%;height:80px;}
+  .swatch-strip div{transition:none;}
+</style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="90" tabindex="0">
+
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark" style="background:var(--bs-primary);" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="#hook">Risk mangement platform</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navCollapse">
+      <ul class="navbar-nav ms-auto nav-pills">
+        <!-- <li class="nav-item"><a class="nav-link" href="#hook">Hook</a></li> -->
+        <li class="nav-item"><a class="nav-link" href="#research">Research</a></li>
+        <li class="nav-item"><a class="nav-link" href="#wireframes">Wireframes</a></li>
+        <li class="nav-item"><a class="nav-link" href="#prototype">Prototype</a></li>
+        <li class="nav-item"><a class="nav-link" href="#outcomes">Outcomes</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HOOK ============ -->
+<header id="hook" class="py-5" style="margin-top:56px;background:#fff;">
+  <div class="container py-4">
+    <p class="section-kicker mb-2">CASE STUDY <br>RISK & COMPLIANCE PLATFORM</p>
+    <h1 class="display-5 fw-bold mb-3" style="max-width:820px;letter-spacing:-0.01em;">Turning a generic admin template into a bank-grade risk platform</h1>
+    <p class="mb-4" style="max-width:700px;font-size: 1.25rem;color:var(--ink-700);">Risk management platform helps financial institutions gather and reconcile data, then calculate, aggregate and report regulatory credit, market, operational and concentration risk - in a natively integrated, modular environment. The product's UI was built on AdminLTE, a free general-purpose dashboard template. My job was the style guide, information architecture and UX decisions that turn that template into something bank back-office users can work in all day.</p>
+
+    <div class="d-flex flex-wrap gap-2 mb-4">
+      <span class="badge rounded-pill text-bg-primary px-3 py-2"> Product design</span>
+      <span class="badge rounded-pill bg-light text-dark border px-3 py-2">UX &amp; UI Design</span>
+      <span class="badge rounded-pill bg-light text-dark border px-3 py-2">FinTech-Banking</span>
+      <span class="badge rounded-pill bg-light text-dark border px-3 py-2"></span>
+      <span class="badge rounded-pill bg-light text-dark border px-3 py-2">Design-thinking approach</span>
+      <span class="badge rounded-pill bg-light text-dark border px-3 py-2">Dashboard</span>
+    </div>
+
+    <div class="row border-top pt-4 g-4 mt-1">
+      <div class="col-6 col-md-2">
+        <div class="text-uppercase small text-secondary mb-1" style="font-size:.7rem;letter-spacing:.06em;">Role</div>
+        <div class="small">Product &amp; UI/UX Designer</div>
+      </div>
+      <div class="col-6 col-md-2"><div class="text-uppercase small text-secondary mb-1" style="font-size:.7rem;letter-spacing:.06em;">Timeline</div><div class="small">2017-2018</div></div>
+      <div class="col-6 col-md-2"><div class="text-uppercase small text-secondary mb-1" style="font-size:.7rem;letter-spacing:.06em;">Team</div><div class="small">Consultants, developers</div></div>
+      <!-- <div class="col-6 col-md-3"><div class="text-uppercase small text-secondary mb-1" style="font-size:.7rem;letter-spacing:.06em;">Users</div?><div class="small">Bank back-office: risk officers, data admins, approvers</div></div> -->
+      <div class="col-6 col-md-2"><div class="text-uppercase small text-secondary mb-1" style="font-size:.7rem;letter-spacing:.06em;">Tools</div><div class="small">HTML/CSS, Bootstrap, Adobe XD</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ RESEARCH ============ -->
+<section id="research" class="py-5 bg-white">
+  <div class="container">
+    <p class="section-kicker mb-2">01 · RESEARCH</p>
+    <h2 class="h3 fw-bold mb-3">Learning a domain I wasn't trained in, and auditing what I inherited</h2>
+    <p style="max-width:760px;color:var(--ink-700);">
+      Before any pixels: COREP, IRB vs. standardised approaches, XBRL taxonomies, and what "exposure," "obligor" and "concentration risk" actually mean. 
+      I couldn't design a status model for an approval chain without understanding what a change request is in a regulated bank, or why an audit trail is non-negotiable. 
+    </p>
+    <p style="max-width:760px;color:var(--ink-700);">I worked through the product's existing data model and the regulatory vocabulary with engineering and product, then mapped the terms users would see on screen against 
+      the terms the database used the two didn't always match, and where they didn't, the screen had to win.
+    </p>
+    <p style="max-width:760px;color:var(--ink-700);">
+      These screens were created new rather than inherited, so design decisions were being made while development was already moving. 
+      Without a shared style guide, every new module risked inventing its own buttons, table and status treatment.
+    </p>
+
+    <div class="story-callout my-4" style="max-width:760px;">
+      <span class="kicker">Context, constraints, goal</span>
+          The product spans four risk domains and multiple approaches credit, market, operational and concentration risk, standardised through IRB.
+          A platform growing in this many directions can't be designed screen-by-screen, it needs a system underneath it.
+          The goal wasn't to simplify what a risk officer sees an inherently dense, high-stakes dataset but to make it scannable and trustworthy.
+    </div>
+
+    <h3 class="h5 fw-bold mt-5 mb-3">Auditing the template I was handed</h3>
+    <p style="max-width:760px;color:var(--ink-700);">AdminLTE is built to demo a bit of everything: widgets, chat panels, social cards, calendars. 
+      Risk management platform needs COREP reporting, exposure reconciliation, XBRL validation and an approval chain almost nothing in the stock template maps to that. 
+      I went through every component and sorted it into four buckets, which became the brief for everything after.
+    </p>
+
+    <div class="table-responsive mt-3">
+      <table class="table table-bordered align-middle" style="max-width:820px;">
+        <tbody>
+          <tr><td class="fw-semibold text-nowrap" style="width:110px;">Keep</td><td class="small">Sidebar shell, box/panel pattern, data tables, breadcrumbs, paginator</td></tr>
+          <tr><td class="fw-semibold text-nowrap">Adapt</td><td class="small">Buttons, badges/labels, modals, form controls, date picker</td></tr>
+          <tr><td class="fw-semibold text-nowrap">Drop</td><td class="small">Chat widgets, social cards, to-do lists, timeline feeds, stock calendar</td></tr>
+          <tr><td class="fw-semibold text-nowrap">Build new</td><td class="small">Status badges, import result log, approval queue, criteria-selection dialog, KPI cards, tasks/notifications dropdowns</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WIREFRAMES ============ -->
+<section id="wireframes" class="py-5" style="background:var(--page);">
+  <div class="container">
+    <p class="section-kicker mb-2">02 · SKETCHING &amp; WIREFRAMING</p>
+    <h2 class="h3 fw-bold mb-3">Restructuring the navigation, then mapping the two flows that carry the product</h2>
+
+    <p style="max-width:760px;color:var(--ink-700);">The early menu mirrored the system's internal structure. Everything flat under Admin and Data Management, with related tasks scattered. I regrouped the sidebar around what people come to do: administering the platform, moving data in and out, and moving changes through the approval chain. Approvals became its own group rather than sitting inside Admin, because it's a distinct job done by distinct people.</p>
+
+    <div class="row g-3 mt-2 mb-5" style="max-width:900px;">
+      <div class="col-6 col-md-3"><div class="card h-100"><div class="card-header bg-dark text-white small" style="font-size:.68rem;letter-spacing:.05em;">ADMIN</div><ul class="list-group list-group-flush small"><li class="list-group-item py-2">Dashboard</li><li class="list-group-item py-2">Analytics</li><li class="list-group-item py-2">Audit &amp; Logs</li></ul></div></div>
+      <div class="col-6 col-md-3"><div class="card h-100"><div class="card-header bg-dark text-white small" style="font-size:.68rem;letter-spacing:.05em;">DATA MANAGEMENT</div><ul class="list-group list-group-flush small"><li class="list-group-item py-2">Data Import</li><li class="list-group-item py-2">Data Management</li></ul></div></div>
+      <div class="col-6 col-md-3"><div class="card h-100"><div class="card-header bg-dark text-white small" style="font-size:.68rem;letter-spacing:.05em;">WORKFLOW</div><ul class="list-group list-group-flush small"><li class="list-group-item py-2 text-primary fw-semibold">Approve Changes</li><li class="list-group-item py-2">COREP</li></ul></div></div>
+      <div class="col-6 col-md-3"><div class="card h-100"><div class="card-header bg-dark text-white small" style="font-size:.68rem;letter-spacing:.05em;">DOWNLOADS</div><ul class="list-group list-group-flush small"><li class="list-group-item py-2">Templates</li></ul></div></div>
+    </div>
+
+    <p style="max-width:760px;color:var(--ink-700);">Two task flows account for most daily use: <b>import → validate → review errors → reconcile</b>, and <b>submit change → route for approval → approve or reject → audit record</b>. I wireframed both at low fidelity before touching any styling, to test where a decision gets made versus where the interface makes you go to make it.</p>
+
+    <div class="wire mt-3 mb-4" style="max-width:640px;">
+      <div class="d-flex gap-2 mb-2"><div class="wire-block" style="flex:1;height:26px;">topbar</div></div>
+        <div class="d-flex gap-2 mb-2"><div class="wire-block" style="flex:0 0 22%;height:60px;">sidebar</div><div class="wire-block" style="flex:1;height:26px;">page title</div></div>
+    <div class="wire-block" style="flex:1;height:26px;">filter</div>
+    <div class="wire-block" style="flex:1;height:74px;">queue table - status column + inline approve/reject</div>
+      <!-- <div class="d-flex gap-2 mb-2"><div class="wire-block" style="flex:0 0 22%;background:transparent;height:26px;"></div><div class="wire-block" style="flex:1;height:26px;">status summary: waiting / approved / rejected</div></div> -->
+      
+      <div class="d-flex gap-2"><div class="wire-block" style="flex:0 0 22%;background:transparent;height:26px;"></div></div>
+    </div>
+
+    <div class="story-callout" style="max-width:760px;">
+      <span class="kicker">Moment of conflict</span>
+      In the original flow, every single request routine or not, opened a modal to resolve. For a queue of thirteen, that's thirteen open-read-decide-close cycles. The wireframe made the cost visible before anything was built.
+    </div>
+    <div class="story-callout climax mt-3" style="max-width:760px;">
+      <span class="kicker">UX decision</span>
+      Resolve routine approvals inline on the row, keep the full dialog for anything needing a comment or audit reason. The dialog stops being the only door, 
+      it becomes the door for consequential decisions.
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROTOTYPE & ITERATION ============ -->
+<section id="prototype" class="py-5 bg-white">
+  <div class="container">
+    <p class="section-kicker mb-2">03 · PROTOTYPING &amp; ITERATION</p>
+    <h2 class="h3 fw-bold mb-3">A three-tier token system, so the platform can grow into it</h2>
+    <p style="max-width:760px;color:var(--ink-700);">Rather than restyling screens one at a time, I extracted every color already in the product's CSS, deduplicated it, and rebuilt it as ramps with fixed semantic meaning: <b>primitives</b> (raw ramps), <b>semantic</b> (roles like <span class="mono">color-action-danger</span>), and <b>component</b> (specific usages like <span class="mono">button.primary.background</span>). This is what makes the light/dark sidebar work without duplication — both skins read the same semantic tokens, so a new nav item or state is styled once.</p>
+
+    <div class="row g-3 mt-2 mb-5" style="max-width:820px;">
+      <div class="col-4"><div class="card tier-card h-100"><div class="tier-head" style="background:var(--ink-900);">TIER 1 — PRIMITIVE</div><div class="tier-body">primary-600<br>success-600<br>warning-600<br>danger-600</div></div></div>
+      <div class="col-4"><div class="card tier-card h-100"><div class="tier-head" style="background:var(--bs-primary);">TIER 2 — SEMANTIC</div><div class="tier-body">color-action-primary<br>color-action-success<br>color-action-warning<br>color-action-danger</div></div></div>
+      <div class="col-4"><div class="card tier-card h-100"><div class="tier-head" style="background:var(--ink-500);">TIER 3 — COMPONENT</div><div class="tier-body">button.primary.bg<br>badge.approved.bg<br>badge.waiting.bg<br>alert.error.bg</div></div></div>
+    </div>
+
+    <div class="swatch-strip mb-2" style="max-width:820px;">
+      <div style="background:#00385A"></div><div style="background:#00598E"></div><div style="background:#0069A7"></div>
+      <div style="background:#374850"></div><div style="background:#008642"></div><div style="background:#E4912B"></div><div style="background:#B13C2E"></div>
+    </div>
+
+    <h3 class="h5 fw-bold mt-5 mb-3">Iterating the approval table</h3>
+    <p style="max-width:760px;color:var(--ink-700);">Same data, same columns - what changed is the encoding. The template renders status as text; the design system renders it as a signal, and puts the routine action on the row.</p>
+    <div class="row g-4 mt-1" style="max-width:820px;">
+      <div class="col-md-6">
+        <div class="card"><div class="card-body p-0"><table class="table table-sm mb-0 small">
+          <tr><th class="px-3">Change ID</th><th>Status</th><th>Comments</th></tr>
+          <tr><td class="px-3 mono">1542814334291</td><td class="text-secondary">Waiting Approval</td><td>comment A</td></tr>
+          <tr><td class="px-3 mono">1542728542717</td><td class="text-secondary">Approved</td><td>test update user</td></tr>
+          <tr><td class="px-3 mono">1542726779530</td><td class="text-secondary">Disapproved</td><td>test update user</td></tr>
+        </table></div></div>
+        <p class="text-center small text-secondary mt-2"><b class="text-dark">Template default</b> - status is a word, same weight as everything else</p>
+      </div>
+      <div class="col-md-6">
+        <div class="card"><div class="card-body p-0"><table class="table table-sm mb-0 small">
+          <tr><th class="px-3">Change ID</th><th>Status</th><th>Approve</th></tr>
+          <tr><td class="px-3 mono">1542814334291</td><td><span class="pbadgest" style="background:var(--bs-warning)">Waiting</span></td><td><i class="fa fa-check text-success"></i> <i class="fa fa-times text-danger"></i></td></tr>
+          <tr><td class="px-3 mono">1542728542717</td><td><span class="pbadgest" style="background:var(--bs-success)">Approved</span></td><td class="text-secondary">—</td></tr>
+          <tr><td class="px-3 mono">1542726779530</td><td><span class="pbadgest" style="background:var(--bs-danger)">Disapproved</span></td><td class="text-secondary">—</td></tr>
+        </table></div></div>
+        <p class="text-center small text-secondary mt-2"><b class="text-dark">Designed</b> - color carries status, action sits where the decision happens</p>
+      </div>
+    </div>
+
+    <div class="alert alert-light border d-flex align-items-center justify-content-between mt-5" style="max-width:760px;">
+      <span><i class="fa fa-external-link me-2"></i>The full-fidelity, full-width prototype - every screen above, plus a working upload-file flow and live tasks/notifications dropdowns - is a separate linked HTML file.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PREVIEW (results) ============ -->
+<section class="hero-preview-strip py-5">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end flex-wrap gap-3 mb-3">
+      <div>
+        <p class="section-kicker mb-1" style="color:#8FC1E0;">RESULTS</p>
+        <!-- <h2 class="text-white h4 mb-0">The screens this case study is about</h2> -->
+      </div>
+      <div class="d-flex align-items-center gap-3">
+        <div class="btn-group btn-group-sm" role="group" id="ptabs">
+          <button class="btn btn-light active" data-pscreen="dashboard">Dashboard</button>
+          <button class="btn btn-light" data-pscreen="import">Data Import</button>
+          <button class="btn btn-light" data-pscreen="manage">Data Management</button>
+          <button class="btn btn-light" data-pscreen="requests">Approve Changes</button>
+        </div>
+        <div class="form-check form-switch text-white mb-0">
+          <input class="form-check-input" type="checkbox" role="switch" id="themeSwitch">
+          <label class="form-check-label small" for="themeSwitch" id="themeLabel">Light sidebar</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="proto-frame">
+      <div class="proto-browserbar"><i class="dot"></i><i class="dot"></i><i class="dot"></i><span class="url">app.RiskManagement.com</span></div>
+
+      <div class="ptopbar">
+        <div class="pbrand"><div class="plogo">R</div>RISK MANAGEMENT</div>
+        <i class="fa fa-bars" style="opacity:.85;margin-left:1.2rem;"></i>
+        <div class="spacer"></div>
+        <div class="pnavicon"><i class="fa fa-tasks"></i><span class="bdot">4</span></div>
+        <div class="pnavicon"><i class="fa fa-bell-o"></i><span class="bdot">5</span></div>
+        <div class="pvdiv"></div>
+        <div class="puser"><i class="fa fa-user-circle-o"></i> Username <i class="fa fa-angle-down" style="font-size:.65rem;"></i></div>
+      </div>
+
+      <div class="pbody">
+        <div class="pside" id="pside">
+          <div class="glabel">ADMIN</div>
+          <div class="pnav active" data-pscreen="dashboard"><i class="fa fa-tachometer" style="width:14px;"></i>Dashboard</div>
+          <div class="pnav" data-pscreen="dashboard"><i class="fa fa-bar-chart" style="width:14px;"></i>Analytics</div>
+          <div class="pnav" data-pscreen="dashboard"><i class="fa fa-info-circle" style="width:14px;"></i>Audit and logs</div>
+          <div class="glabel">DATA MANAGEMENT</div>
+          <div class="pnav" data-pscreen="import"><i class="fa fa-upload" style="width:14px;"></i>Data import</div>
+          <div class="pnav" data-pscreen="manage"><i class="fa fa-database" style="width:14px;"></i>Data management</div>
+          <div class="glabel">WORKFLOW</div>
+          <div class="pnav" data-pscreen="requests"><i class="fa fa-check-square-o" style="width:14px;"></i>Approve changes<span class="pbadge">4</span></div>
+          <div class="pnav" data-pscreen="dashboard"><i class="fa fa-file-text-o" style="width:14px;"></i>COREP</div>
+        </div>
+
+        <div class="pmain">
+          <!-- DASHBOARD -->
+          <div class="pscreen active" id="pscreen-dashboard">
+            <div class="ph1">Dashboard <button class="btn btn-sm btn-primary" style="font-size:.68rem;"><i class="fa fa-download"></i> Export summary</button></div>
+            <div class="pkpis">
+              <div class="pkpi"><div class="icn" style="background:var(--bs-primary)"><i class="fa fa-database"></i></div><div class="txt"><div class="lbl">Exposure records</div><div class="val">752</div></div></div>
+              <div class="pkpi"><div class="icn" style="background:var(--bs-warning)"><i class="fa fa-clock-o"></i></div><div class="txt"><div class="lbl">Pending approvals</div><div class="val">13</div></div></div>
+              <div class="pkpi"><div class="icn" style="background:var(--bs-success)"><i class="fa fa-upload"></i></div><div class="txt"><div class="lbl">Imports today</div><div class="val">6</div></div></div>
+              <div class="pkpi"><div class="icn" style="background:var(--bs-info)"><i class="fa fa-check"></i></div><div class="txt"><div class="lbl">Data quality score</div><div class="val">3</div></div></div>
+            </div>
+            <div class="prow2">
+              <div class="ppanel"><h6>Import volume - last 14 days</h6>
+                <svg class="pline" viewBox="0 0 500 80" preserveAspectRatio="none">
+                  <defs><linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--bs-primary)" stop-opacity="0.35"/><stop offset="100%" stop-color="var(--bs-primary)" stop-opacity="0"/></linearGradient></defs>
+                  <polyline points="0,68 35,62 70,64 105,50 140,55 175,37 210,44 245,29 280,34 315,21 350,26 385,16 420,20 455,10 490,14" fill="none" stroke="var(--ink-900)" stroke-width="1.4"/>
+                  <polygon points="0,68 35,62 70,64 105,50 140,55 175,37 210,44 245,29 280,34 315,21 350,26 385,16 420,20 455,10 490,14 490,80 0,80" fill="url(#lg2)"/>
+                </svg>
+              </div>
+              <div class="ppanel"><h6>Exposure by type</h6>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="pdonut"></div>
+                  <div class="plegend flex-fill">
+                    <div class="li"><i class="sw" style="background:var(--bs-primary)"></i>IR<span class="val">38%</span></div>
+                    <div class="li"><i class="sw" style="background:var(--bs-success)"></i>FX<span class="val">25%</span></div>
+                    <div class="li"><i class="sw" style="background:var(--bs-warning)"></i>Credit<span class="val">19%</span></div>
+                    <div class="li"><i class="sw" style="background:var(--bs-danger)"></i>Other<span class="val">18%</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="prow2" style="grid-template-columns:1fr 1fr;">
+              <div class="ppanel"><h6>Recent activity</h6>
+                <div class="pactrow"><span><i class="fa fa-circle" style="color:var(--bs-success);font-size:6px;"></i>&nbsp; Import cleaned - 130 rows</span><span class="text-secondary">2m</span></div>
+                <div class="pactrow"><span><i class="fa fa-circle" style="color:var(--bs-danger);font-size:6px;"></i>&nbsp; testing.xlsm - 3 row errors</span><span class="text-secondary">41m</span></div>
+                <div class="pactrow"><span><i class="fa fa-circle" style="color:var(--bs-primary);font-size:6px;"></i>&nbsp; Change 1542728542717 approved</span><span class="text-secondary">1h</span></div>
+              </div>
+              <div class="ppanel"><h6>Waiting on you - 13 total</h6>
+                <div class="pactrow"><span>RMF_EXPOSURES · edit by user</span><span><span class="picn ok"><i class="fa fa-check"></i></span><span class="picn no"><i class="fa fa-times"></i></span></span></div>
+                <div class="pactrow"><span>RMF_SECURITIES · edit by admin</span><span><span class="picn ok"><i class="fa fa-check"></i></span><span class="picn no"><i class="fa fa-times"></i></span></span></div>
+                <div class="pactrow"><span>RMF_EXPOSURES · new record</span><span><span class="picn ok"><i class="fa fa-check"></i></span><span class="picn no"><i class="fa fa-times"></i></span></span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DATA IMPORT -->
+          <div class="pscreen" id="pscreen-import">
+            <div class="ph1">Data import <button class="btn btn-sm btn-success" style="font-size:.68rem;"><i class="fa fa-upload"></i> Upload file</button></div>
+            <div class="ppanel" style="padding:0;">
+              <table class="ptable">
+                <tr><th>Filename</th><th>Upload date/time</th><th>Status</th></tr>
+                <tr><td>Risk_management_platform_Loader_working.xlsm</td><td class="mono">11-7-2018, 17:55</td><td><span class="pbadgest" style="background:var(--bs-success)">Imported</span></td></tr>
+                <tr><td>Risk_management_platform_Loader_working.xlsm</td><td class="mono">11-7-2021, 15:30</td><td><span class="pbadgest" style="background:var(--bs-danger)">Imported with errors</span></td></tr>
+                <tr><td>Risk_management_platform_Loader_working.xlsm</td><td class="mono">11-7-2021, 14:18</td><td><span class="pbadgest" style="background:var(--bs-info)">Processing</span></td></tr>
+                <tr><td>testing.xlsm</td><td class="mono">11-8-2022, 15:34</td><td><span class="pbadgest" style="background:#9BA4A8">Deleted</span></td></tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- DATA MANAGEMENT -->
+          <div class="pscreen" id="pscreen-manage">
+            <div class="ph1">Data management <button class="btn btn-sm btn-success" style="font-size:.68rem;"><i class="fa fa-plus"></i> Add new record</button></div>
+            <div class="ppanel" style="padding:0;">
+              <table class="ptable">
+                <tr><th>Time ID</th><th>ID</th><th>Input date</th><th>Code</th><th>Exposure type</th></tr>
+                <tr><td class="mono">20130101</td><td class="mono">4000000</td><td class="mono">2017-11-22</td><td>IR Exposure 4000000</td><td>430</td></tr>
+                <tr><td class="mono">20130101</td><td class="mono">4000001</td><td class="mono">2017-11-22</td><td>IR Exposure 4000001</td><td>430</td></tr>
+                <tr><td class="mono">20130101</td><td class="mono">4000002</td><td class="mono">2017-11-22</td><td>IR Exposure 4000002</td><td>430</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- APPROVE CHANGES -->
+          <div class="pscreen" id="pscreen-requests">
+            <div class="ph1">Approve changes</div>
+            <div class="alert alert-primary py-2 px-3 mb-2" style="font-size:.72rem;">You have 4 new requests updates</div>
+            <div class="ppanel" style="padding:0;">
+              <table class="ptable">
+                <tr><th>Change ID</th><th>Table #</th><th>Status</th><th>Approve</th></tr>
+                <tr><td class="mono">1542814334291</td><td>RMF_EXPOSURES</td><td><span class="pbadgest" style="background:var(--bs-warning)">Waiting approval</span></td><td><i class="fa fa-check" style="color:var(--bs-success)"></i> <i class="fa fa-times" style="color:var(--bs-danger)"></i></td></tr>
+                <tr><td class="mono">1542728542717</td><td>RMF_EXPOSURES</td><td><span class="pbadgest" style="background:var(--bs-success)">Approved</span></td><td class="text-secondary">—</td></tr>
+                <tr><td class="mono">1542726779530</td><td>RMF_EXPOSURES</td><td><span class="pbadgest" style="background:var(--bs-danger)">Disapproved</span></td><td class="text-secondary">—</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="text-white-50 small mt-3 mb-0">This is a condensed, working preview. The full-fidelity prototype - including a real upload-file flow and the tasks/notifications dropdowns - is a separate linked file; see the Prototype section below.</p>
+  </div>
+</section>
+
+<!-- ============ OUTCOMES ============ -->
+<section id="outcomes" class="py-5" style="background:var(--page);">
+  <div class="container">
+    <p class="section-kicker mb-2">04 · OUTCOMES &amp; LESSONS LEARNED</p>
+    <h2 class="h3 fw-bold mb-4">What the system delivers</h2>
+
+    <div class="list-group mb-5" style="max-width:780px;">
+      <div class="list-group-item d-flex gap-3 py-3"><i class="fa fa-check-circle text-success mt-1"></i><div><b>A real Dashboard, not an empty menu item.</b> Pending approvals, import health, record counts and exposure breakdown are visible on login, instead of living only inside each sub-screen.</div></div>
+      <div class="list-group-item d-flex gap-3 py-3"><i class="fa fa-check-circle text-success mt-1"></i><div><b>Approve / reject without leaving the table.</b> Routine change requests resolve inline; the full dialog stays for anything needing a comment or audit reason.</div></div>
+      <div class="list-group-item d-flex gap-3 py-3"><i class="fa fa-check-circle text-success mt-1"></i><div><b>One shell, two skins, zero drift.</b> Light and dark sidebar are the same markup reading different token values, so a new nav item or state never has to be styled twice.</div></div>
+      <div class="list-group-item d-flex gap-3 py-3"><i class="fa fa-check-circle text-success mt-1"></i><div><b>Status has exactly five colors, everywhere.</b> Success, warning, alert, info and neutral mean the same thing whether you're in an import log, an approval queue, or a badge.</div></div>
+      <div class="list-group-item d-flex gap-3 py-3"><i class="fa fa-check-circle text-success mt-1"></i><div><b>A system the platform can grow into.</b> New modules across credit, market, operational and concentration risk inherit the tokens and components instead of inventing their own.</div></div>
+    </div>
+
+    <h3 class="h5 fw-bold mb-3">What I'd do differently</h3>
+    <p class="small text-secondary mb-3">Honest notes, because a case study without them isn't worth much.</p>
+    <div class="row g-3" style="max-width:780px;">
+      <div class="col-12"><div class="alert alert-light border mb-0"><b>Validate with real users earlier.</b> These decisions were grounded in domain research, stakeholder input and established patterns for dense back-office tools - not in moderated testing with bank risk officers. The inline-approval change in particular is the kind of thing I'd want to watch someone use before calling it settled.</div></div>
+      <div class="col-12"><div class="alert alert-light border mb-0"><b>Build the token system before the first screen, not alongside it.</b> Tokens were extracted from CSS that already existed, so I was reconciling decisions that had already shipped. Starting from the system would have been cleaner - though in a project already in development, working in parallel was the realistic option.</div></div>
+      <div class="col-12"><div class="alert alert-light border mb-0"><b>Push further on the widest tables.</b> A 752-row, many-column exposures grid deserves its own dedicated pass: saved filter sets, column presets per role, and a considered approach to horizontal scroll.</div></div>
+    </div>
+  </div>
+</section>
+
+<footer class="py-4 border-top">
+  <div class="container small text-secondary">Risk management platform - style guide and UX structure designed on top of AdminLTE (MIT licensed). Tokens extracted from the product's production CSS; every screen in the preview above is a working prototype, not a static comp.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function pgo(screen){
+    document.querySelectorAll('.pside .pnav').forEach(n=>n.classList.remove('active'));
+    document.querySelector('.pside .pnav[data-pscreen="'+screen+'"]').classList.add('active');
+    document.querySelectorAll('.pscreen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('pscreen-'+screen).classList.add('active');
+    document.querySelectorAll('#ptabs .btn').forEach(b=>b.classList.toggle('active', b.dataset.pscreen===screen));
+  }
+  document.querySelectorAll('.pside .pnav').forEach(a=> a.addEventListener('click', ()=>pgo(a.dataset.pscreen)) );
+  document.querySelectorAll('#ptabs .btn').forEach(b=> b.addEventListener('click', ()=>pgo(b.dataset.pscreen)) );
+
+  document.getElementById('themeSwitch').addEventListener('change', function(){
+    document.getElementById('pside').classList.toggle('dark-side', this.checked);
+    document.getElementById('themeLabel').textContent = this.checked ? 'Dark sidebar' : 'Light sidebar';
+    document.getElementById('pside').style.background = this.checked ? '#232E33' : '';
+    document.getElementById('pside').style.color = this.checked ? '#C4CDD1' : '';
+    document.querySelectorAll('.pside .pnav:not(.active)').forEach(n=>{ n.style.color = this.checked ? '#C4CDD1' : ''; });
+  });
+</script>
+</body>
+</html>
